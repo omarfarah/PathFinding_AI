@@ -45,11 +45,11 @@ public class PathFinding{
 	}
 
 
-public static void main(String[] args){
-	//getMaze("/Users/Perlanie/Documents/Projects/PathFinding_Ai/maze.txt");
-	// Maze m = new Maze(board,);	
-	readBoard(args[0]);
-}
+	public static void main(String[] args){
+		//getMaze("/Users/Perlanie/Documents/Projects/PathFinding_Ai/maze.txt");
+		// Maze m = new Maze(board,);	
+		readBoard(args[0]);
+	}
 
 
 }

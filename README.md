@@ -1,4 +1,4 @@
-# PathFinding_Ai
+# PathFinding_AI
 Path Finding - 
 
 TBD.
