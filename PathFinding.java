@@ -4,21 +4,30 @@ import java.util.*;
 public class PathFinding{
 	
 	public static Maze maze;
-	public static ArrayList<Robot> robots;
+	public static ArrayList<Robot> robots=new ArrayList<Robot>();
 	
-	public static void readBoard(File path)throws FileNotFoundException, IOException{
+	/*===============================================================
+	readMazeFile: reads in the maze file to get the information to 
+	intialize the maze and robots
+	================================================================*/
+	public static void readMazeFile(File path)throws FileNotFoundException, IOException{
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
 			Node[][] board = null;
 			String line = null;
 			String[] tokens = null;
-			
+			int width=0;
+			int height=0;
+			int endX=0;
+			int endY=0;
 			//parse file
 			try{
-				int current;
+				
 				//get grid size
 				line = reader.readLine();
 				tokens = line.split(" ");
-				board = new Node[Integer.parseInt(tokens[0])][Integer.parseInt(tokens[1])];
+				width=Integer.parseInt(tokens[0]);
+				height=Integer.parseInt(tokens[1]);
+				board = new Node[height][width];
 				
 				//get number of robots
 				line = reader.readLine();
@@ -35,35 +44,42 @@ public class PathFinding{
 				//get coordinates for end point
 				line = reader.readLine();
 				tokens = line.split(" ");
-				
+				endX=Integer.parseInt(tokens[0]);
+				endY=Integer.parseInt(tokens[1]);
+
 				//populate grid
-				for (int row = 0; row < board.length; row++){
-					for (int col = 0; col < board.length; col++){
+				int current;
+				for (int row = 0; row < height; row++){
+					for (int col = 0; col < width; col++){
 						current = reader.read();
 						if (current == 48){
-							board[col][row] = new Node(0,0,row,col,false); // do we need to pass values for g and h?
+							board[row][col] = new Node(row,col,false); 
 						} else {
-							board[col][row] = new Node(0,0,row,col,true);
+							board[row][col] = new Node(row,col,true);
 						}
 					}
 					current = reader.read(); // read CR
-					current = reader.read(); // read new line
 				}
 			
 			}
 			catch (IOException e){
 				System.out.println("Error: Cannot readfile");
 			}	
-			maze = new Maze(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), board);
+			maze = new Maze(height,width,endX,endY,board);
 		}			
 		catch(FileNotFoundException f){
 			System.out.println("Error: File not found");
 		}
 	}
 
+
+	/*===================================
+					Main
+	====================================*/
 	public static void main(String[] args) throws IOException{
 		//getMaze("/Users/Perlanie/Documents/Projects/PathFinding_Ai/maze.txt");
-		readBoard(new File(args[0]));	
+		readMazeFile(new File(args[0]));
+		maze.printBoard();	
 		
 	}
 
