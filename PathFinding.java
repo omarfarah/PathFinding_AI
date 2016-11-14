@@ -72,6 +72,13 @@ public class PathFinding{
 		}
 	}
 
+	/*===============================================================
+	findPathAStar: uses the A* algorithm to find a path for the robot
+	if there is a solution
+	================================================================*/
+	public void findPathAStar(){
+
+	}
 
 	/*===================================
 					Main
