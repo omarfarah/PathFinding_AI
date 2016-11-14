@@ -2,13 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class Maze{
-	ArrayList<ArrayList<Node>> board;
-	int height;
-	int width;
+	Node[][] board;
+	int height, width, endX, endY;
 	
-	public Maze(int height, int width){
-		this.board=new ArrayList<ArrayList<Node>>();
-		this.height=height;
-		this.width=width;
+	public Maze(int endX, int endY, Node[][] board){
+		this.board=board;
+		this.endX=endX;
+		this.endY=endY;
 	}
 }
