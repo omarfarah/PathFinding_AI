@@ -9,6 +9,4 @@ public class Robot{
 		this.row=row;
 		this.col=col;
 	}
-
-
 }

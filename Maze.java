@@ -35,6 +35,7 @@ public class Maze{
 		}
 	}
 
+
 	/*===============================================================
 	getNode: gets the node that is specified by the row and column
 	----------------------------------------------------------------
@@ -55,9 +56,13 @@ public class Maze{
 				this.board[r][c].setH(lineDistance);
 			}
 		}
-
-
-
 	}
-
+	
+	public boolean isGoal(Node n){
+		if (n.getRow() == endY && n.getCol() == endX){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

@@ -77,17 +77,90 @@ public class PathFinding{
 	if there is a solution
 	================================================================*/
 	public void findPathAStar(){
-
+		for (int i = 0; i < robots.size(); i ++){
+			LinkedList<Node> frontier = new LinkedList<Node>();
+			ArrayList<Node> visited = new ArrayList<Node>();
+			int currentStep = 0;
+			Node current = maze.getNode(robots[i].row. robots[i].col);
+			frontier.add(current)
+			while (frontier.size() != 0){
+				currentStep++;
+				current = getNext(); // get value with lowest value
+				visited.add(current);
+				if (maze.isGoal(current)){ //check if current is goal state
+					break;
+				}else{
+					CheckNodes(current, currentStep, frontier, visited);
+				}
+			}
+			
+		}
 	}
-
+	
+	public Node getNext(LinkedList<Node> frontier){
+			Node min = frontier.get(0);
+			for (int i = 1; i < frontier.size(); i++){
+				if (min.getDistance() > frontier.get(i).getDistance()){
+					min = frontier.get(i);
+				}
+			}
+			return frontier.remove(min);
+	}
+	
+	/*===============================================================
+	CheckNodes: Check the neighbouring nodes and add them to the frontier
+	================================================================*/
+	public static void CheckNodes(Node current, int currentStep, LinkedList<Node> frontier, ArrayList<Node> visited){
+		int col = current.getCol();
+		int row = current.getRow();
+		
+		//check north node
+		if (col-1 >= 0){
+			Node north = maze.getNode(row, col-1);
+			if (!north.isBool()) && !visited.contains(north)){
+				north.setG(currentStep);
+				frontier.add(north);
+			}
+		}
+		
+		//check south node
+		if (col+1 >= maze.height - 1){
+			Node south = maze.getNode(row, col+1);
+			if (!south.isBool() && !visited.contains(south){
+				south.setG(currentStep);
+				frontier.add(south);
+			}
+		}
+		
+		//check west node
+		if (row - 1 >= 0){
+			Node west = maze.getNode(row-1, col);
+			if (!west.isBool() && !visited.contains(west){
+				west.setG(currentStep);
+				frontier.add(west);
+			}
+		}
+		
+		//check east node
+		if (row + 1 >= maze.width + 1){
+			Node east = maze.getNode(row+1, col);
+			if (!east.isBool() && !visited.contains(east){
+				east.setG(currentStep);
+				frontier.add(east);
+			}
+		}
+	}
+	
 	/*===================================
 					Main
 	====================================*/
 	public static void main(String[] args) throws IOException{
 		//getMaze("/Users/Perlanie/Documents/Projects/PathFinding_Ai/maze.txt");
 		readMazeFile(new File(args[0]));
-		maze.printBoard();	
+		maze.printBoard();
+		maze.calcHValues();
 		
+		maze.findPathAStar();
 	}
 
 
