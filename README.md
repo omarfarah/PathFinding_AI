@@ -1,11 +1,9 @@
 # PathFinding_AI
-Path Finding 
+###Path Finding 
 
 Using the A* algorithm we are tasked to find the shortest path from one, or more robots to a final rendezvous point on a 2D map. The room will be a static environment where the robot must traverse through the map and find the final point without disturbing the surrounding obstacles.  
 
-
-Problem Formulation
-
+##Problem Formulation
 Initial state: Robot’s starting position given by an (x,y) coordinate.
 
 Actions: Robot moves left, right, up, down.
@@ -16,8 +14,7 @@ Goal Test: Check if robot is at the rendezvous point.
 
 Path Cost: f(n)=h(n)+g(n). 
 
-Input Example
-
+##Input Example
 >8 10                 // the room has dimensions 8 by 10
 
 >2                 // there are N = 2 robots
@@ -34,8 +31,7 @@ Input Example
 >0000110000             // room points (0,1), (1,1), ... (9,1)
 >1100000011             // room points (0,0), (1,0), ... (9,0)
 
-A* Algorithm
-
+##A* Algorithm
 The A* algorithm is a popular algorithm for pathfinding and graph traversal. It avoids expanding all possible paths which can be expensive. It uses the total estimated solution cost to determine each move towards the end node. The estimated solution cost is defined as:
  f(n)=g(n)+h(n) 
  
