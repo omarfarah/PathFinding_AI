@@ -25,8 +25,8 @@ public class PathFinding{
 				//get grid size
 				line = reader.readLine();
 				tokens = line.split(" ");
-				width=Integer.parseInt(tokens[0]);
-				height=Integer.parseInt(tokens[1]);
+				height=Integer.parseInt(tokens[0]);
+				width=Integer.parseInt(tokens[1]);
 				board = new Node[height][width];
 				
 				//get number of robots
@@ -38,7 +38,7 @@ public class PathFinding{
 				for (int i = 0; i < numRobots; i++){
 					line = reader.readLine();
 					tokens = line.split(" ");
-					robots.add(new Robot(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
+					robots.add(new Robot(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[0])));
 				}
 				
 				//get coordinates for end point
@@ -76,16 +76,16 @@ public class PathFinding{
 	findPathAStar: uses the A* algorithm to find a path for the robot
 	if there is a solution
 	================================================================*/
-	public void findPathAStar(){
+	public static void findPathAStar(){
 		for (int i = 0; i < robots.size(); i ++){
 			LinkedList<Node> frontier = new LinkedList<Node>();
 			ArrayList<Node> visited = new ArrayList<Node>();
 			int currentStep = 0;
-			Node current = maze.getNode(robots[i].row. robots[i].col);
-			frontier.add(current)
+			Node current = maze.getNode(robots.get(i).getRow(), robots.get(i).getCol());
+			frontier.add(current);
 			while (frontier.size() != 0){
 				currentStep++;
-				current = getNext(); // get value with lowest value
+				current = getNext(frontier); // get value with lowest value
 				visited.add(current);
 				if (maze.isGoal(current)){ //check if current is goal state
 					break;
@@ -97,14 +97,16 @@ public class PathFinding{
 		}
 	}
 	
-	public Node getNext(LinkedList<Node> frontier){
+	public static Node getNext(LinkedList<Node> frontier){
 			Node min = frontier.get(0);
 			for (int i = 1; i < frontier.size(); i++){
 				if (min.getDistance() > frontier.get(i).getDistance()){
 					min = frontier.get(i);
 				}
 			}
-			return frontier.remove(min);
+			frontier.remove(min);
+			System.out.println("popping:("+min.getRow()+","+min.getRow()+")");
+			return min;
 	}
 	
 	/*===============================================================
@@ -115,38 +117,44 @@ public class PathFinding{
 		int row = current.getRow();
 		
 		//check north node
-		if (col-1 >= 0){
-			Node north = maze.getNode(row, col-1);
-			if (!north.isBool()) && !visited.contains(north)){
+		if (row-1 >= 0){
+			Node north = maze.getNode(row-1, col);
+			if (!north.isBool() && !visited.contains(north)){
 				north.setG(currentStep);
 				frontier.add(north);
+				System.out.println("NORTH: ("+north.getRow()+","+north.getCol()+")");
 			}
 		}
 		
 		//check south node
-		if (col+1 >= maze.height - 1){
-			Node south = maze.getNode(row, col+1);
-			if (!south.isBool() && !visited.contains(south){
+		if (row+1 <= maze.height - 1){
+			Node south = maze.getNode(row+1, col);
+			if (!south.isBool() && !visited.contains(south)){
 				south.setG(currentStep);
 				frontier.add(south);
+				System.out.println("SOUTH: ("+south.getRow()+","+south.getCol()+")");
+
 			}
 		}
 		
 		//check west node
-		if (row - 1 >= 0){
-			Node west = maze.getNode(row-1, col);
-			if (!west.isBool() && !visited.contains(west){
+		if (col-1 >= 0){
+			Node west = maze.getNode(row, col-1);
+			if (!west.isBool() && !visited.contains(west)){
 				west.setG(currentStep);
 				frontier.add(west);
+				System.out.println("WEST: ("+west.getRow()+","+west.getCol()+")");
 			}
 		}
 		
+		//System.out.println("EAST: " + (col+1) + ", maze: "+( maze.width-1));
 		//check east node
-		if (row + 1 >= maze.width + 1){
-			Node east = maze.getNode(row+1, col);
-			if (!east.isBool() && !visited.contains(east){
+		if (col+ 1 <= maze.width-1){
+			Node east = maze.getNode(row, col+1);
+			if (!east.isBool() && !visited.contains(east)){
 				east.setG(currentStep);
 				frontier.add(east);
+				System.out.println("EAST: ("+east.getRow()+","+east.getCol()+")");
 			}
 		}
 	}
@@ -160,7 +168,7 @@ public class PathFinding{
 		maze.printBoard();
 		maze.calcHValues();
 		
-		maze.findPathAStar();
+		findPathAStar();
 	}
 
 

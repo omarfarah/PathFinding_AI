@@ -17,14 +17,14 @@ public class Node{
 	/*===============================================================
 	getRow: sets the H value of the node
 	================================================================*/
-	public void getRow(){
+	public int getRow(){
 		return this.row;
 	}
 	
 	/*===============================================================
 	getRow: sets the H value of the node
 	================================================================*/
-	public void getCol(){
+	public int getCol(){
 		return this.col;
 	}
 	public double getDistance(){
@@ -33,7 +33,7 @@ public class Node{
 	/*===============================================================
 	getRow: sets the H value of the node
 	================================================================*/
-	public void getBool(){
+	public boolean isBool(){
 		return this.isObject;
 	}
 	
@@ -50,5 +50,6 @@ public class Node{
 	public void setG(int gValue){
 		this.g=gValue;
 	}
+
 
 }

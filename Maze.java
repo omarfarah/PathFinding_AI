@@ -24,8 +24,11 @@ public class Maze{
 			String row="";
 			for(int c=0;c<this.width;c++){
 				Node node=this.getNode(r,c);
-				if(node.isObject==true){
+				if(node.isBool()){
 					row=row+"1";
+				}
+				else if (node.getRow()==this.endY&& node.getCol()==this.endX){
+					row=row+"X";
 				}
 				else{
 					row=row+"0";
