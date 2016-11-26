@@ -16,16 +16,27 @@ Path Cost: f(n)=h(n)+g(n).
 
 ##Input Example
 >8 10                 // the room has dimensions 8 by 10
+
 >2                 // there are N = 2 robots
+
 >2 1                 // 1st robot initial position: point (2,1)
+
 >8 2                 // 2nd robot initial position: point (8,2) 
+
 >4 7                // the rendezvous point R has coordinates (4,7)
+
 >1000000001            // room points (0,7), (1,7), ... (9,7)
+
 >1100000011
+
 >0000000000
+
 >1000110001
+
 >1001111001
+
 >0001111000
+
 >0000110000             // room points (0,1), (1,1), ... (9,1)
 
 >1100000011             // room points (0,0), (1,0), ... (9,0)
