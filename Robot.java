@@ -40,7 +40,7 @@ public class Robot{
 			for(int i=pathSize-2; i>= 0;i--){
 				robPath=robPath+" => ["+this.path.get(i).getCol()+","+this.path.get(i).getRow()+"]";
 			}
-			System.out.println(robPath);
+			System.out.println(robPath+"\n");
 		}
 		else{
 			System.out.println("No Solution.");

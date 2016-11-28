@@ -29,9 +29,14 @@ public class Node{
 	public int getCol(){
 		return this.col;
 	}
+
 	public double getDistance(){
 		//System.out.println("F("+this.col+","+this.row+")="+(double)this.g +"+"+this.h+"="+((double)this.g + (double)this.h));
 		return ((double)this.g + (double)this.h);
+	}
+	public double getF(){
+		//System.out.println("F("+this.col+","+this.row+")="+(double)this.g +"+"+this.h+"="+((double)this.g + (double)this.h));
+		return this.f;//((double)this.g + (double)this.h);
 	}
 
 	public void setF(double f){

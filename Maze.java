@@ -14,6 +14,20 @@ public class Maze{
 		this.endY=endY;
 	}
 
+	public Maze copyMaze(){
+		Node[][] newBoard = new Node[this.height][this.width];
+		for(int r=0;r<this.height;r++){
+			for(int c=0;c<this.width;c++){
+				newBoard[r][c]=this.board[r][c];
+			}
+		}
+
+		Maze newMaze=new Maze(this.height,this.width,this.endX,this.endY,newBoard);
+
+		return newMaze;
+		
+
+	}
 	/*===============================================================
 	readMazeFile: reads in the maze file to get the information to 
 	intialize the maze and robots
@@ -49,13 +63,23 @@ public class Maze{
 		return this.board[row][col];
 	}
 
+	public void resetMaze(){
+		for(int r=0; r<this.height;r++){
+			for(int c=0;c<this.width;c++){
+				this.board[r][c].setG(0);
+				this.board[r][c].setParent(null);
+			}
+		}
+	}
+
 	/*=================================================================
 	calcHValues: calculates the H values of all the nodes in the board
 	==================================================================*/
 	public void calcHValues(){
 		for(int r=0; r<this.height;r++){
 			for(int c=0;c<this.width;c++){
-				double lineDistance = Math.hypot((this.endX-r),(this.endY-c));
+				//System.out.println("("+c+","++);
+				double lineDistance = Math.sqrt(Math.pow(this.endY-r,2)+Math.pow(this.endX-c,2));
 				this.board[r][c].setH(lineDistance);
 			}
 		}

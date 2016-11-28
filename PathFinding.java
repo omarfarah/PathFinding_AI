@@ -4,6 +4,7 @@ import java.util.*;
 public class PathFinding{
 	
 	public static Maze maze;
+	public static String mazeFilePath;
 	public static ArrayList<Robot> robots=new ArrayList<Robot>();
 	public static LinkedList<Node> frontier = new LinkedList<Node>();
 	public static ArrayList<Node> visited = new ArrayList<Node>();
@@ -78,8 +79,10 @@ public class PathFinding{
 	findPathAStar: uses the A* algorithm to find a path for the robot
 	if there is a solution
 	================================================================*/
-	public static void findPathAStar(){
-		for (int i = 0; i < robots.size(); i ++){
+	public static void findPathAStar()throws FileNotFoundException, IOException{
+		//Maze copyMaze=maze.copyMaze();
+		int numRobots=robots.size();
+		for (int i = 0; i < numRobots; i ++){
 			int currentStep = 0;
 			int initRow=robots.get(i).getRow();
 			int initCol=robots.get(i).getCol();
@@ -97,8 +100,6 @@ public class PathFinding{
 					break;
 				}else{
 					CheckNodes(current, currentStep, visited);
-
-					
 				}
 			}
 
@@ -111,6 +112,14 @@ public class PathFinding{
 				System.out.println("No Solution.");
 			}
 			
+			maze.resetMaze();
+			readMazeFile(new File(mazeFilePath));
+			while(!frontier.isEmpty()){
+				frontier.poll();
+			}
+			//maze.resetMaze();
+			//maze=copyMaze;
+			
 		}
 	}
 
@@ -122,20 +131,21 @@ public class PathFinding{
 	}
 	
 	public static Node getNext(){
-			Node min1 = frontier.poll();
+		Node min1 = frontier.get(0);
 
-			while(!frontier.isEmpty()){
-				Node min2=frontier.poll();
-				if ((min1.getDistance()) > (min2.getDistance())){
-					min1 = min2;
-
-				}
+		for(Node min2: frontier){
+			if(maze.isGoal(min2)){
+				return min2;
 			}
+			if ((min1.getDistance()) > (min2.getDistance())){
+				min1 = min2;
 
-			//System.out.println("popping min:("+min.getRow()+","+min.getRow()+")"+ ", F(x)="+min.getDistance());
-			//frontier.remove(min);
-			
-			return min1;
+			}
+		}
+
+		frontier.remove(min1);
+
+		return min1;
 	}
 	
 	/*===============================================================
@@ -149,15 +159,18 @@ public class PathFinding{
 		if (row-1 >= 0){
 			Node north = maze.getNode(row-1, col);
 			if (!north.isBool() && !visited.contains(north)){
-				north.setG(currentStep);
+				
+				if(north.getG()==0.0){
+					north.setG(currentStep);
+				}
+				if(north.getF()==0 || (north.getDistance()<north.getF())){
+
+				}
 				if(!frontier.contains(north)){
-					//System.out.println("Added: ("+north.getCol()+","+north.getRow()+")");
 					frontier.add(north);
 					north.setParent(current);
 					
 				}
-				
-				//System.out.println("NORTH: ("+north.getRow()+","+north.getCol()+")");
 			}
 		}
 		
@@ -165,15 +178,13 @@ public class PathFinding{
 		if (row+1 <= maze.height - 1){
 			Node south = maze.getNode(row+1, col);
 			if (!south.isBool() && !visited.contains(south)){
-				//System.out.println("F("+col+","+(row+1)+")="+south.isBool());
-				south.setG(currentStep);
+				if(south.getG()==0.0){
+					south.setG(currentStep);
+				}
 				if(!frontier.contains(south)){
-					//System.out.println("Added: ("+south.getCol()+","+south.getRow()+")");
 					frontier.add(south);
 					south.setParent(current);
 				}
-				//System.out.println("SOUTH: ("+south.getRow()+","+south.getCol()+")");
-
 			}
 		}
 		
@@ -181,14 +192,13 @@ public class PathFinding{
 		if (col-1 >= 0){
 			Node west = maze.getNode(row, col-1);
 			if (!west.isBool() && !visited.contains(west)){
-				//System.out.println("F("+(col-1)+","+row+")="+west.isBool());
-				west.setG(currentStep);
+				if(west.getG()==0.0){
+					west.setG(currentStep);
+				}
 				if(!frontier.contains(west)){
-					//System.out.println("Added: ("+west.getCol()+","+west.getRow()+")");
 					frontier.add(west);
 					west.setParent(current);
 				}
-				//System.out.println("WEST: ("+west.getRow()+","+west.getCol()+")");
 			}
 		}
 		
@@ -196,19 +206,19 @@ public class PathFinding{
 		if (col+ 1 <= maze.width-1){
 			Node east = maze.getNode(row, col+1);
 			if (!east.isBool() && !visited.contains(east)){
-				//System.out.println("F("+(col+1)+","+row+")="+east.isBool());
-				east.setG(currentStep);
+				if(east.getG()==0.0){
+					east.setG(currentStep);
+				}
 				if(!frontier.contains(east)){
-					//System.out.println("Added: ("+east.getCol()+","+east.getRow()+")");
 					frontier.add(east);
 					east.setParent(current);
 				}
-				//System.out.println("EAST: ("+east.getRow()+","+east.getCol()+")");
 			}
 		}
 
 		for (int j = 0; j < frontier.size(); j++){
-					System.out.println("frontier("+j+"):("+frontier.get(j).getCol()+","+frontier.get(j).getRow()+")");
+					Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
+					System.out.println("frontier("+j+"):("+node.getCol()+","+node.getRow()+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
 				}
 				System.out.println("========================================");
 	}
@@ -217,11 +227,10 @@ public class PathFinding{
 					Main
 	====================================*/
 	public static void main(String[] args) throws IOException{
-		//getMaze("/Users/Perlanie/Documents/Projects/PathFinding_Ai/maze.txt");
-		readMazeFile(new File(args[0]));
+		mazeFilePath=args[0];
+		readMazeFile(new File(mazeFilePath));
 		maze.printBoard();
 		maze.calcHValues();
-		
 		findPathAStar();
 	}
 
