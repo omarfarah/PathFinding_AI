@@ -5,6 +5,7 @@ import java.lang.Math;
 public class Maze{
 	Node[][] board;
 	int height, width, endX, endY;
+	int[] rowInverse;
 	
 	public Maze(int height, int width,int endX, int endY, Node[][] board){
 		this.height=height;
@@ -12,6 +13,12 @@ public class Maze{
 		this.board=board;
 		this.endX=endX;
 		this.endY=endY;
+		this.rowInverse= new int[this.height];
+		int counter=0;
+		for(int i=this.height-1;i>=0;i--){
+			this.rowInverse[i]=counter;
+			counter++;
+		}	
 	}
 
 	public Maze copyMaze(){
@@ -33,7 +40,8 @@ public class Maze{
 	intialize the maze and robots
 	================================================================*/
 	public void printBoard(){
-		
+
+			
 		for(int r=0;r<this.height;r++){
 			String row="";
 			for(int c=0;c<this.width;c++){

@@ -8,6 +8,7 @@ public class PathFinding{
 	public static ArrayList<Robot> robots=new ArrayList<Robot>();
 	public static LinkedList<Node> frontier = new LinkedList<Node>();
 	public static ArrayList<Node> visited = new ArrayList<Node>();
+	public static int [] rowInverse;
 	
 	/*===============================================================
 	readMazeFile: reads in the maze file to get the information to 
@@ -22,6 +23,8 @@ public class PathFinding{
 			int height=0;
 			int endX=0;
 			int endY=0;
+
+			
 			//parse file
 			try{
 				
@@ -31,7 +34,15 @@ public class PathFinding{
 				height=Integer.parseInt(tokens[0]);
 				width=Integer.parseInt(tokens[1]);
 				board = new Node[height][width];
+				rowInverse= new int[height];
+				int counter=0;
+				for(int h=height-1;h>=0;h--){
+					rowInverse[h]=counter;
+					//System.out.println("rowInverse:"+rowInverse[h]);
+					counter++;
+				}	
 				
+
 				//get number of robots
 				line = reader.readLine();
 				tokens = line.split(" ");
@@ -41,15 +52,16 @@ public class PathFinding{
 				for (int i = 0; i < numRobots; i++){
 					line = reader.readLine();
 					tokens = line.split(" ");
-					robots.add(new Robot(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[0])));
+					//System.out.println("("+tokens[0]+","+rowInverse[Integer.parseInt(tokens[1])]+")");
+					robots.add(new Robot(rowInverse[Integer.parseInt(tokens[1])], Integer.parseInt(tokens[0])));
 				}
 				
 				//get coordinates for end point
 				line = reader.readLine();
 				tokens = line.split(" ");
 				endX=Integer.parseInt(tokens[0]);
-				endY=Integer.parseInt(tokens[1]);
-
+				endY=rowInverse[Integer.parseInt(tokens[1])];
+				//System.out.println("("+endX+","+endY+")");
 				//populate grid
 				int current;
 				for (int row = 0; row < height; row++){
@@ -81,6 +93,7 @@ public class PathFinding{
 	================================================================*/
 	public static void findPathAStar()throws FileNotFoundException, IOException{
 		//Maze copyMaze=maze.copyMaze();
+
 		int numRobots=robots.size();
 		for (int i = 0; i < numRobots; i ++){
 			int currentStep = 0;
@@ -106,7 +119,7 @@ public class PathFinding{
 			if(maze.isGoal(current)){
 				traceBackPath(current,robots.get(i));
 				robots.get(i).addToPath(maze.getNode(initRow, initCol));
-				robots.get(i).printRobotPath();
+				printRobotPath(robots.get(i));
 			}
 			else{
 				System.out.println("No Solution.");
@@ -146,6 +159,23 @@ public class PathFinding{
 		frontier.remove(min1);
 
 		return min1;
+	}
+
+	public static void printRobotPath(Robot robot){
+		ArrayList<Node> path=robot.getRobotPath();
+		if(!path.isEmpty()){
+			System.out.println("Path:");
+			int pathSize=path.size();
+			String robPath="["+path.get(pathSize-1).getCol()+","+rowInverse[path.get(pathSize-1).getRow()]+"]";
+			for(int i=pathSize-2; i>= 0;i--){
+				robPath=robPath+" => ["+path.get(i).getCol()+","+rowInverse[path.get(i).getRow()]+"]";
+			}
+			System.out.println(robPath+"\n");
+		}
+		else{
+			System.out.println("No Solution.");
+		}
+		
 	}
 	
 	/*===============================================================
@@ -218,7 +248,7 @@ public class PathFinding{
 
 		for (int j = 0; j < frontier.size(); j++){
 					Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
-					System.out.println("frontier("+j+"):("+node.getCol()+","+node.getRow()+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
+					System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
 				}
 				System.out.println("========================================");
 	}
