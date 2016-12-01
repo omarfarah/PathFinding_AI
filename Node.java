@@ -4,11 +4,11 @@ import java.util.*;
 public class Node{
 	private double g=0;
 	private double h;
-	private double f;
 	private int row;
 	private int col;
 	private boolean isObject;
 	private Node parent;
+	private String symbol;
 
 	public Node(int row, int col, boolean isObject){
 		this.row=row;
@@ -31,16 +31,7 @@ public class Node{
 	}
 
 	public double getDistance(){
-		//System.out.println("F("+this.col+","+this.row+")="+(double)this.g +"+"+this.h+"="+((double)this.g + (double)this.h));
 		return ((double)this.g + (double)this.h);
-	}
-	public double getF(){
-		//System.out.println("F("+this.col+","+this.row+")="+(double)this.g +"+"+this.h+"="+((double)this.g + (double)this.h));
-		return this.f;//((double)this.g + (double)this.h);
-	}
-
-	public void setF(double f){
-		this.f=f;
 	}
 
 	/*===============================================================
@@ -78,6 +69,13 @@ public class Node{
 
 	public Node getParent(){
 		return this.parent;
+	}
+
+	public void setSymbol(String symbol){
+		this.symbol=symbol;
+	}
+	public String getSymbol(){
+		return this.symbol;
 	}
 
 

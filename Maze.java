@@ -49,6 +49,9 @@ public class Maze{
 				if(node.isBool()){
 					row=row+"1";
 				}
+				else if(node.getSymbol()!=null && !(node.getRow()==this.endY&& node.getCol()==this.endX)){
+					row=row+node.getSymbol();
+				}
 				else if (node.getRow()==this.endY&& node.getCol()==this.endX){
 					row=row+"X";
 				}
@@ -71,15 +74,6 @@ public class Maze{
 		return this.board[row][col];
 	}
 
-	public void resetMaze(){
-		for(int r=0; r<this.height;r++){
-			for(int c=0;c<this.width;c++){
-				this.board[r][c].setG(0);
-				this.board[r][c].setParent(null);
-			}
-		}
-	}
-
 	/*=================================================================
 	calcHValues: calculates the H values of all the nodes in the board
 	==================================================================*/
@@ -93,6 +87,9 @@ public class Maze{
 		}
 	}
 	
+	/*=================================================================
+	isGoal: returns if a certain node is the goal node
+	==================================================================*/
 	public boolean isGoal(Node n){
 		if (n.getRow() == endY && n.getCol() == endX){
 			return true;
