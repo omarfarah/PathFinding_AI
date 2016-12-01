@@ -2,6 +2,15 @@ import java.io.*;
 import java.util.*;
 import java.lang.Math;
 
+/*===============================================================
+Maze Class: Create an instance for the input Maze.	
+	@param height;	The height of the Maze
+	@param width;	The width of the Maze
+	@param board;	The node instance
+	@param endX;	Last positon of the board X
+	@param endY;	Last positon of the board Y
+================================================================*/
+	
 public class Maze{
 	Node[][] board;
 	int height, width, endX, endY;
@@ -21,6 +30,9 @@ public class Maze{
 		}	
 	}
 
+	/*===============================================================
+	Copy: Create a copy of the Maze
+	================================================================*/
 	public Maze copyMaze(){
 		Node[][] newBoard = new Node[this.height][this.width];
 		for(int r=0;r<this.height;r++){
@@ -97,7 +109,10 @@ public class Maze{
 			return false;
 		}
 	}
-
+	
+	/*=================================================================
+	getDestination: returns the goal state
+	==================================================================*/
 	public int [] getDestination(){
 		int[] destintation={this.endX,this.endY};
 		return destintation;
