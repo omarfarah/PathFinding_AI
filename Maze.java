@@ -49,7 +49,7 @@ public class Maze{
 	}
 	/*===============================================================
 	readMazeFile: reads in the maze file to get the information to 
-	intialize the maze and robots
+	init the maze and robots
 	================================================================*/
 	public void printBoard(){
 
@@ -72,6 +72,7 @@ public class Maze{
 				}
 			}
 			System.out.println(row);
+			
 		}
 	}
 

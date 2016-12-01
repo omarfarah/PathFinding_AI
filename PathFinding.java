@@ -78,6 +78,7 @@ public class PathFinding{
 						}
 					}
 					current = reader.read(); // read CR
+					current = reader.read(); // read New line for windows machine for macOS you do not need this
 				}
 			
 			}
@@ -278,9 +279,9 @@ public class PathFinding{
 		//prints current values in the frontier
 		for (int j = 0; j < frontier.size(); j++){
 					Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
-					//System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
+				//	System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
 				}
-				//System.out.println("========================================");
+			//	System.out.println("========================================");
 	}
 	
 	/*===================================
@@ -288,7 +289,7 @@ public class PathFinding{
 	====================================*/
 	public static void main(String[] args) throws IOException{
 		mazeFilePath=args[0];
-		mazeFilePath="maps/maze0.txt";
+		mazeFilePath="maps/maze8.txt";
 		readMazeFile(new File(mazeFilePath));
 		maze.printBoard();
 		maze.calcHValues();
