@@ -92,30 +92,35 @@ public class PathFinding{
 	if there is a solution
 	================================================================*/
 	public static void findPathAStar()throws FileNotFoundException, IOException{
-		//Maze copyMaze=maze.copyMaze();
+		Maze copyMaze=maze.copyMaze();
 
 		int numRobots=robots.size();
 		for (int i = 0; i < numRobots; i ++){
+			System.out.println("====================================================================");
 			int currentStep = 0;
 			int initRow=robots.get(i).getRow();
 			int initCol=robots.get(i).getCol();
 			Node current = maze.getNode(initRow, initCol);
+			System.out.println("Robot Starting Position: ("+initCol+","+rowInverse[initRow]+")");
 			
+			if(!current.isBool()){
+				frontier.add(current);
 
-			frontier.add(current);
-
-			while (frontier.size() != 0){
-				currentStep++;
-				
-				current = getNext(); // get value with lowest value
-				visited.add(current);
-				if (maze.isGoal(current)){ //check if current is goal state
-					break;
-				}else{
-					CheckNodes(current, currentStep, visited);
+				while (frontier.size() != 0){
+					currentStep++;
+					
+					current = getNext(); // get value with lowest value
+					visited.add(current);
+					if (maze.isGoal(current)){ //check if current is goal state
+						break;
+					}else{
+						CheckNodes(current, currentStep, visited);
+					}
 				}
 			}
-
+			else{
+				System.out.println("Robot Position is an obstacle.");
+			}
 			if(maze.isGoal(current)){
 				traceBackPath(current,robots.get(i));
 				robots.get(i).addToPath(maze.getNode(initRow, initCol));
@@ -125,13 +130,14 @@ public class PathFinding{
 				System.out.println("No Solution.");
 			}
 			
-			maze.resetMaze();
-			readMazeFile(new File(mazeFilePath));
+
+			//maze.resetMaze();
+			//readMazeFile(new File(mazeFilePath));
 			while(!frontier.isEmpty()){
 				frontier.poll();
 			}
 			//maze.resetMaze();
-			//maze=copyMaze;
+			maze=copyMaze.copyMaze();
 			
 		}
 	}
@@ -193,9 +199,9 @@ public class PathFinding{
 				if(north.getG()==0.0){
 					north.setG(currentStep);
 				}
-				if(north.getF()==0 || (north.getDistance()<north.getF())){
+				// if(north.getF()==0 || (north.getDistance()<north.getF())){
 
-				}
+				// }
 				if(!frontier.contains(north)){
 					frontier.add(north);
 					north.setParent(current);
@@ -261,8 +267,14 @@ public class PathFinding{
 		readMazeFile(new File(mazeFilePath));
 		maze.printBoard();
 		maze.calcHValues();
+		int[] destination=maze.getDestination();
+		System.out.println("====================================================================");
+		System.out.println("Destination: ("+destination[0]+","+rowInverse[destination[1]]+")");
 		findPathAStar();
-	}
+		//System.out.println(maze.getNode(rowInverse[5],0).isBool());
+		//System.out.println(maze.getNode(rowInverse[2],99).isBool());
+		//System.out.println(maze.getNode(rowInverse[3],80).isBool());
+	 }
 
 
 }

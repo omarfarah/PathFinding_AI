@@ -25,7 +25,7 @@ public class Maze{
 		Node[][] newBoard = new Node[this.height][this.width];
 		for(int r=0;r<this.height;r++){
 			for(int c=0;c<this.width;c++){
-				newBoard[r][c]=this.board[r][c];
+				newBoard[r][c]=new Node(r,c,this.board[r][c].isBool());
 			}
 		}
 
@@ -99,5 +99,10 @@ public class Maze{
 		}else{
 			return false;
 		}
+	}
+
+	public int [] getDestination(){
+		int[] destintation={this.endX,this.endY};
+		return destintation;
 	}
 }
