@@ -1,6 +1,12 @@
 import java.io.*;
 import java.util.*;
 
+
+/*===============================================================
+Pathfinding Class: The main mucho programo
+================================================================*/
+
+
 public class PathFinding{
 	
 	public static Maze maze;
@@ -14,7 +20,7 @@ public class PathFinding{
 	
 	/*===============================================================
 	readMazeFile: reads in the maze file to get the information to 
-	intialize the maze and robots
+	init the maze and robots
 	================================================================*/
 	public static void readMazeFile(File path)throws FileNotFoundException, IOException{
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -74,6 +80,7 @@ public class PathFinding{
 						}
 					}
 					current = reader.read(); // read CR
+					//current = reader.read(); // read New line for windows machine for macOS you do not need this
 				}
 			
 			}
@@ -140,6 +147,10 @@ public class PathFinding{
 			
 		}
 	}
+	
+	/*===============================================================
+	printVisualRobotPath: prints the solution if any
+	================================================================*/
 
 	public static void printVisualRobotPath(Robot robot){
 		ArrayList<Node> path=robot.getRobotPath();
@@ -166,24 +177,6 @@ public class PathFinding{
 			currentNode=currentNode.getParent();
 		}
 	}
-	
-	// public static Node getNext(){
-	// 	Node min1 = frontier.get(0);
-
-	// 	for(Node min2: frontier){
-	// 		if(maze.isGoal(min2)){
-	// 			return min2;
-	// 		}
-	// 		if ((min1.getDistance()) > (min2.getDistance())){
-	// 			min1 = min2;
-
-	// 		}
-	// 	}
-
-	// 	frontier.remove(min1);
-
-	// 	return min1;
-	// }
 
 	public static void printRobotPath(Robot robot){
 		ArrayList<Node> path=robot.getRobotPath();
@@ -267,12 +260,7 @@ public class PathFinding{
 			}
 		}
 
-		//prints current values in the frontier
-		// for (int j = 0; j < frontier.size(); j++){
-		// 			Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
-		// 			System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
-		// 		}
-		// 		System.out.println("========================================");
+
 	}
 	
 	/*===================================
@@ -280,6 +268,7 @@ public class PathFinding{
 	====================================*/
 	public static void main(String[] args) throws IOException{
 		mazeFilePath=args[0];
+		//mazeFilePath="maps/maze8.txt";
 		readMazeFile(new File(mazeFilePath));
 		maze.printBoard();
 		maze.calcHValues();
