@@ -6,7 +6,9 @@ public class PathFinding{
 	public static Maze maze;
 	public static String mazeFilePath;
 	public static ArrayList<Robot> robots=new ArrayList<Robot>();
-	public static LinkedList<Node> frontier = new LinkedList<Node>();
+	public static Comparator<Node> comparator = new NodeComparator();
+    public static PriorityQueue<Node> frontier = new PriorityQueue<Node>(comparator);
+	//public static LinkedList<Node> frontier = new LinkedList<Node>();
 	public static ArrayList<Node> visited = new ArrayList<Node>();
 	public static int [] rowInverse;
 	
@@ -107,7 +109,7 @@ public class PathFinding{
 				while (frontier.size() != 0){
 					currentStep++;
 					
-					current = getNext(); // get value with lowest value
+					current = frontier.poll();//getNext(); // get value with lowest value
 					visited.add(current);
 					if (maze.isGoal(current)){ //check if current is goal state
 						break;
@@ -120,10 +122,10 @@ public class PathFinding{
 				System.out.println("Robot Position is an obstacle.");
 			}
 			if(maze.isGoal(current)){
+				System.out.println("Getting Path...");
 				traceBackPath(current,robots.get(i));
 				robots.get(i).addToPath(maze.getNode(initRow, initCol));
 				printRobotPath(robots.get(i));
-
 				printVisualRobotPath(robots.get(i));
 			}
 			else{
@@ -165,23 +167,23 @@ public class PathFinding{
 		}
 	}
 	
-	public static Node getNext(){
-		Node min1 = frontier.get(0);
+	// public static Node getNext(){
+	// 	Node min1 = frontier.get(0);
 
-		for(Node min2: frontier){
-			if(maze.isGoal(min2)){
-				return min2;
-			}
-			if ((min1.getDistance()) > (min2.getDistance())){
-				min1 = min2;
+	// 	for(Node min2: frontier){
+	// 		if(maze.isGoal(min2)){
+	// 			return min2;
+	// 		}
+	// 		if ((min1.getDistance()) > (min2.getDistance())){
+	// 			min1 = min2;
 
-			}
-		}
+	// 		}
+	// 	}
 
-		frontier.remove(min1);
+	// 	frontier.remove(min1);
 
-		return min1;
-	}
+	// 	return min1;
+	// }
 
 	public static void printRobotPath(Robot robot){
 		ArrayList<Node> path=robot.getRobotPath();
@@ -266,11 +268,11 @@ public class PathFinding{
 		}
 
 		//prints current values in the frontier
-		for (int j = 0; j < frontier.size(); j++){
-					Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
-					System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
-				}
-				System.out.println("========================================");
+		// for (int j = 0; j < frontier.size(); j++){
+		// 			Node node=maze.getNode(frontier.get(j).getRow(),frontier.get(j).getCol());
+		// 			System.out.println("frontier("+j+"):("+node.getCol()+","+rowInverse[node.getRow()]+"), F(x)="+node.getG()+"+"+node.getH()+"="+node.getDistance());
+		// 		}
+		// 		System.out.println("========================================");
 	}
 	
 	/*===================================
@@ -290,3 +292,6 @@ public class PathFinding{
 
 
 }
+
+
+
