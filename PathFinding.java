@@ -15,7 +15,7 @@ public class PathFinding{
 	public static Comparator<Node> comparator = new NodeComparator();
     public static PriorityQueue<Node> frontier = new PriorityQueue<Node>(comparator);
 	//public static LinkedList<Node> frontier = new LinkedList<Node>();
-	public static ArrayList<Node> visited = new ArrayList<Node>();
+	public static HashSet<Node> visited = new HashSet<Node>();
 	public static int [] rowInverse;
 	
 	/*===============================================================
@@ -198,7 +198,7 @@ public class PathFinding{
 	/*===============================================================
 	CheckNodes: Check the neighbouring nodes and add them to the frontier
 	================================================================*/
-	public static void CheckNodes(Node current, int currentStep, ArrayList<Node> visited){
+	public static void CheckNodes(Node current, int currentStep, HashSet<Node> visited){
 		int col = current.getCol();
 		int row = current.getRow();
 		
